@@ -17,7 +17,7 @@
       <legend>SEARCH HOTEL</legend>
     </fieldset>
     <div class="inner-form">
-      <div class="input-field first-wrap">
+      <div class="input-field fouth-wrap">
         <div class="icon-wrap">
 		{% comment %} Estos SVG son los iconos que llamo desde su link {% endcomment %}
           <svg
@@ -31,11 +31,12 @@
             ></path>
           </svg>
         </div>
-        <input
-          id="search"
-          type="text"
-          placeholder="What are you looking for?"
-        />
+        <select data-trigger="" name="city" id="cities">
+                  <option value="{{ None }}" placeholder >Select a city</option>
+                  {% for city in cities %}
+										<option value="{{ city.id }}">{{ city.name }}</option>
+									{% endfor %}
+                  </select>
       </div>
       <div class="input-field second-wrap">
         <div class="icon-wrap">
