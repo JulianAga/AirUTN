@@ -37,5 +37,6 @@ def hotel_search(request):
 def hotel_details(request, property_id):
     try:
         requested_property = Property.objects.get(id=property_id)
-    except Property.DoesNotExist: raise Http404("Not Found")
+    except Property.DoesNotExist as property_dont_exist :
+        raise Http404("Not Found") from property_dont_exist
     return render(request, 'bookings/hotel-details.html', {'property': requested_property})
