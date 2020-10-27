@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 from .models import City, Property, ReservationDate, Reservation
 
@@ -33,3 +33,9 @@ def hotel_search(request):
 
         context = {'properties': properties}
         return render(request, 'bookings/hotel_search.html', context)
+
+def hotel_details(request, property_id):
+    try:
+        requested_property = Property.objects.get(id=property_id)
+    except Property.DoesNotExist: raise Http404("Not Found")
+    return render(request, 'bookings/hotel-details.html', {'property': requested_property})
