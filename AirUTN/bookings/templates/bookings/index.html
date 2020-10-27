@@ -31,12 +31,12 @@
             ></path>
           </svg>
         </div>
-        <select data-trigger="" name="city" id="cities">
-                  <option value="{{ None }}" placeholder >Select a city</option>
+        <select data-trigger="" name="city" id="city">
+                  <option value="{{ None }}" >Select a city</option>
                   {% for city in cities %}
 										<option value="{{ city.id }}">{{ city.name }}</option>
 									{% endfor %}
-                  </select>
+        </select>
       </div>
       <div class="input-field second-wrap">
         <div class="icon-wrap">
@@ -88,8 +88,9 @@
             ></path>
           </svg>
         </div>
-        <select data-trigger="" name="pax" id="PassengersSelectInput">
-          <option value="1" placeholder="">1 Pax</option>
+        <select data-trigger="" name="pax" id="pax">
+        <option value="{{ None }}" >Passangers</option>
+          <option value="1"> 1 Pax</option>
           <option value="2" >2 Pax</option>
           <option value="3" >3 Pax</option>
           <option value="4" >4 Pax</option>
