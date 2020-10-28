@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/federico/myproject/venv/bin/python",
+    "python.pythonPath": "C:\\Users\\Julian\\AirUTN\\venv\\Scripts\\python.exe",
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django"
     ],

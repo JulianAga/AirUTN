@@ -27,8 +27,8 @@ class Property(models.Model):
     picture = models.ImageField(blank=False, null=True, upload_to=property_image_rename)
     max_pax = models.PositiveIntegerField(blank=False, null=False, default=1)
     daily_cost = models.FloatField(blank=False, null=False, default=0)
-    city = models.ForeignKey(City,related_name="city", on_delete=models.DO_NOTHING, null=True, blank=False)
-    owner = models.ForeignKey(User,related_name="owner", null=True, blank=True, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.DO_NOTHING, null=True, blank=False)
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name_plural = "properties"
@@ -47,10 +47,10 @@ class Reservation(models.Model):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
-class RentalDate(models.Model):
+class ReservationDate(models.Model):
     date = models.DateField(blank=False, null=False)
-    property = models.ForeignKey(Property,related_name="property", on_delete=models.PROTECT, blank=False, null=False)
-    reservation = models.ForeignKey(Reservation,related_name="reservation", on_delete=models.PROTECT, blank=True, null=True)
+    property = models.ForeignKey(Property, on_delete=models.PROTECT, blank=False, null=False)
+    reservation = models.ForeignKey(Reservation, on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
-        return self.property.name + ' ' + self.date
+        return self.property.name
