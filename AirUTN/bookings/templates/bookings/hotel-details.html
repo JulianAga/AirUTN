@@ -22,7 +22,7 @@
 						<p class="card-text small text-muted">{{ property.city.name|capfirst }}</p>
 						<p class="card-text">{{ property.description|upper }}</p>
 						<h2>AR$ {{ property.daily_cost }}</h2>
-						<p>commission for service {{ service }}</p>
+						<p>Commission per service AR$ {{ service }}</p>
 					</div>
 				</div>
 			</div>
@@ -55,7 +55,7 @@
 						<input type="hidden" name="property_id" value="{{ property.id }}">
 					</div>
                     <div class="form-group float-right">
-                        <button type="submit" class="btn btn-warning">Reserve</button>
+                        <button type="submit" class="btn text-white" style="background: #009BEB">Reserve</button>
                     </div>
 				</form>
 			</div>

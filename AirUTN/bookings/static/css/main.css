@@ -14,7 +14,7 @@ html {
  */
 body {
   margin: 0;
-  background-image: url('images/Searchs_002.png');
+  background-image: url('images/hotel.jpg');
 }
 
 /**
@@ -1522,10 +1522,9 @@ span.flatpickr-weekday {
   -ms-flex-align: center;
       align-items: center;
   font-family: 'Poppins', sans-serif;
-  background: url("../images/Searchs_002.png");
+  background: url("../images/hotel.jpg");
   background-size: cover;
   background-position: center center;
-  padding: 15px;
 }
 
 .s002 form {
@@ -1589,7 +1588,7 @@ span.flatpickr-weekday {
   width: 100%;
   padding: 10px 20px 10px 45px;
   font-size: 16px;
-  color: #555;
+  color: #000000;
   font-weight: 400;
   font-family: 'Poppins', sans-serif;
 }
@@ -1682,7 +1681,7 @@ span.flatpickr-weekday {
   -ms-flex-align: center;
       align-items: center;
   height: 100%;
-  color: #666;
+  color: #000000;
 }
 
 .s002 form .inner-form .input-field.fouth-wrap .choices[data-type*="select-one"]:after {
@@ -1704,11 +1703,11 @@ span.flatpickr-weekday {
 
 .s002 form .inner-form .input-field.fouth-wrap .choices__list--dropdown .choices__item--selectable.is-highlighted {
   background: #fff;
-  color: #b78a62;
+  color: #009BEB;
 }
 
 .s002 form .inner-form .input-field.fouth-wrap .choices__list--dropdown .choices__item {
-  color: #555;
+  color: #000000;
   min-height: 24px;
   font-size: 16px;
 }
@@ -1723,7 +1722,7 @@ span.flatpickr-weekday {
 .s002 form .inner-form .input-field.fifth-wrap .btn-search {
   height: 70px;
   width: 100%;
-  background: #b78a62;
+  background: #009BEB;
   white-space: nowrap;
   border-radius: .5px;
   font-size: 20px;
@@ -1736,7 +1735,7 @@ span.flatpickr-weekday {
 }
 
 .s002 form .inner-form .input-field.fifth-wrap .btn-search:hover {
-  background: #af7d51;
+  background: #0178D0;
 }
 
 @media screen and (max-width: 992px) {
