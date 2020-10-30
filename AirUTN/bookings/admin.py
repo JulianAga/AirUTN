@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry, ADDITION
 from .models import Property, ReservationDate, City
 
 class ReservationDateInline(admin.TabularInline):
@@ -12,15 +15,22 @@ class AdminProperty(admin.ModelAdmin):
     exclude = ['owner']
 
     def save_model(self, request, obj, form, change):
-        if getattr(obj, 'owner', None) is None:
-            obj.owner = request.user
-        obj.save()
+        obj.owner = request.user
+        super(AdminProperty, self).save_model(request, obj, form, change)
 
     def get_queryset(self, request):
         qs = super(AdminProperty, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(owner=request.user)
+        property_ct = ContentType.objects.get_for_model(Property)
+        log_entries = LogEntry.objects.filter(
+            content_type=property_ct,
+            user=request.user,
+            action_flag=ADDITION
+        )
+        user_property_ids = [a.object_id for a in log_entries]
+        return qs.filter(id__in=user_property_ids)
+    
 
 admin.site.register(City)
 admin.site.register(Property, AdminProperty)
