@@ -52,5 +52,5 @@ class ReservationDate(models.Model):
     property = models.ForeignKey(Property, on_delete=models.PROTECT, blank=False, null=False)
     reservation = models.ForeignKey(Reservation, on_delete=models.PROTECT, blank=True, null=True)
 
-    def __str__(self):
-        return self.property.name
+def __str__(self):
+    return self.property.name

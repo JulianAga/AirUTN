@@ -17,5 +17,5 @@ class PropertyTopicsTests(TestCase):
         Property.objects.create(name='Casa de Marcos', description='Casa de verano',
         picture=None, max_pax=4, daily_cost=1500, city=city, owner=user)
     
-    def test_property_persistance(self):
-        self.assertTrue(Property.objects.exists())
+def test_property_persistance(self):
+    self.assertTrue(Property.objects.exists())
