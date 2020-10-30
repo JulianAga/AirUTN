@@ -32,17 +32,17 @@ def hotel_search(request):
         if not pax.__eq__('None'):
             properties = properties.filter(max_pax__gte=pax)
 
-        if not datebegin == '' and not dateEnd == '':
-            diastotales = days_between(datebegin, dateEnd)
-            for property in properties:
-                reservation = ReservationDate.objects.all()
-                reservation = reservation.filter(property=property,reservation__isnull=True)
-                initialindex = get_reservation_index(datebegin,reservation)
-                finalindex = get_reservation_index(dateEnd,reservation)
-                if initialindex > -1 and finalindex > -1:
-                    newreservation = reservation.filter()[initialindex:finalindex]
-                    if len(newreservation) == diastotales:
-                        properties.append(property)
+        # if not datebegin == '' and not dateEnd == '':
+        #     diastotales = days_between(datebegin, dateEnd)
+        #     for property in properties:
+        #         reservation = ReservationDate.objects.all()
+        #         reservation = reservation.filter(property=property,reservation__isnull=True)
+        #         initialindex = get_reservation_index(datebegin,reservation)
+        #         finalindex = get_reservation_index(dateEnd,reservation)
+        #         if initialindex > -1 and finalindex > -1:
+        #             newreservation = reservation.filter()[initialindex:finalindex]
+        #             if len(newreservation) == diastotales:
+        #                 properties.append(property)
 
         context = {'properties': properties}
         return render(request, 'bookings/hotel_search.html', context)
@@ -50,9 +50,10 @@ def hotel_search(request):
 def hotel_details(request, property_id):
     try:
         requested_property = Property.objects.get(id=property_id)
+        service = requested_property.daily_cost * 0.08
     except Property.DoesNotExist as property_dont_exist :
         raise Http404("Not Found") from property_dont_exist
-    return render(request, 'bookings/hotel-details.html', {'property': requested_property})
+    return render(request, 'bookings/hotel-details.html', {'property': requested_property, 'service': service})
 
 def days_between(d1, d2):
        d1 = datetime.strptime(d1, "%Y-%m-%d")
