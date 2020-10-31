@@ -22,7 +22,12 @@
                 <h6>Hi, this is the itinerary for <span class="text-info">{{ reservation.first_name }} {{ reservation.last_name }}</span>!:</h6>
                 <br>
                 <p class="font-weight-bold">Email: <span class="text-info">{{ reservation.email }}</span></p>
-                <p class="font-weight-bold">Reservation made on: <span class="text-info">{{ reservation.reservation_date }}</span></p>
+                <p class="font-weight-bold">Total : $<span class="text-info">{{ total_amount }}</span></p>
+                <p class="font-weight-bold">Reservation made on: <span class="text-info">{% now "Y-m-d" %} </span></p>
+                <p class="font-weight-bold">Your reservation days are : </p>
+                {% for date in reservation_dates  %}
+                    <span class="text-info">*{{ date }}</span><br>
+                {% endfor %}
             </div>
         </div>
     </div>
