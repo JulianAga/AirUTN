@@ -53,9 +53,10 @@ def hotel_search(request):
 def hotel_details(request, property_id):
     try:
         requested_property = Property.objects.get(id=property_id)
+        service = requested_property.daily_cost * 0.08
     except Property.DoesNotExist as property_dont_exist :
         raise Http404("Not Found") from property_dont_exist
-    return render(request, 'bookings/hotel-details.html', {'property': requested_property})
+    return render(request, 'bookings/hotel-details.html', {'property': requested_property, 'service': service})
 
 def days_between(d1, d2):
        d1 = datetime.strptime(d1, "%Y-%m-%d")
