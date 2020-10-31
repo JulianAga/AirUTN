@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 
 from .models import City, Property, ReservationDate, Reservation
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 def index(request):
@@ -15,8 +15,9 @@ def index(request):
 
 
 def hotel_search(request):
+    
     if request.method == 'GET':
-        properties = Property.objects.all()
+        properties = Property.objects.all()        
         context = {'properties': properties}
         return render(request, 'bookings/hotel_search.html', context)
     if request.method == 'POST':
@@ -25,7 +26,7 @@ def hotel_search(request):
         datebegin = request.POST.get('depart', False)
         dateEnd = request.POST.get('return', False)
         properties = Property.objects.all()
-
+        propertiesFiltered = []
         if not city.__eq__('None'):
             properties = properties.filter(city=city)
 
@@ -41,10 +42,12 @@ def hotel_search(request):
                 finalindex = get_reservation_index(dateEnd,reservation)
                 if initialindex > -1 and finalindex > -1:
                     newreservation = reservation.filter()[initialindex:finalindex]
+                    
                     if len(newreservation) == diastotales:
-                        properties.append(property)
+                        propertiesFiltered.append(property)    
+                              
 
-        context = {'properties': properties}
+        context = {'properties': propertiesFiltered}
         return render(request, 'bookings/hotel_search.html', context)
 
 def hotel_details(request, property_id):
@@ -59,9 +62,9 @@ def days_between(d1, d2):
        d2 = datetime.strptime(d2, "%Y-%m-%d")
        return abs((d2 - d1).days)
      
-def get_reservation_index(date,ReservationDate):
+def get_reservation_index(date,reservationDate):
     a = -1
-    for i, e in enumerate(ReservationDate):
+    for i, e in enumerate(reservationDate):
         if str(e.date) == str(date):
             a = i
     return a  # for not found reservation date
@@ -75,29 +78,43 @@ def check_availability(request):
         for reservation_date in reservation_dates:
             if reservation_date.reservation is not None:
                 if datetime_start_date <= reservation_date.date <= datetime_end_date:
-                    return render(request, 'bookings/no-availability.html')
-        r = Reservation(
-            reservation_date=datetime.now().date(),
-            property=requested_property,
-            first_name=request.POST['first_name'],
-            last_name=request.POST['last_name'],
-            email=request.POST['email'])
-        r.save()
+                    return render(request, 'bookings/no-availability.html')        
         count = 0
         for reservation_date in reservation_dates:
             if datetime_start_date <= reservation_date.date <= datetime_end_date:
+                r = Reservation(
+                reservation_date=reservation_date,
+                property=requested_property,
+                first_name=request.POST['first_name'],
+                last_name=request.POST['last_name'],
+                email=request.POST['email'])
+                r.save()
                 reservation_date.reservation = r
                 reservation_date.save()
                 count = count + 1
         if count == 0:
             return render(request, 'bookings/no-availability.html')
-        r.total_amount = r.property.daily_cost * r.property.reservationdate_set.filter(reservation=r).count()
-        r.save()
-        return redirect('bookings:successful_booking', r.id)
+        r.total_amount = r.property.daily_cost * r.property.reservationdate_set.filter(reservation=r).count() *1.08
+        r.save()        
+        return redirect('bookings:successful_booking', r.id,
+        datetime_start_date.year,datetime_start_date.month,datetime_start_date.day,
+        datetime_end_date.year,datetime_end_date.month,datetime_end_date.day)
 
-def successful_booking(request, reservation_id):
+def successful_booking(request, reservation_id,year1,month1,day1,year2,month2,day2):
+    
+    dateBegin = date(int(year1),int(month1),int(day1))
+    dateEnd = date(int(year2),int(month2),int(day2))
     try:
         requested_reservation = Reservation.objects.get(id=reservation_id)
+        reservationDates = list(ReservationDate.objects.all())        
+        initialindex = get_reservation_index(dateBegin,reservationDates)
+        finalindex = get_reservation_index(dateEnd,reservationDates)        
+        reservationDates = reservationDates[initialindex:finalindex+1]
+        
+        dates = []
+        for d in reservationDates:
+            dates.append(d.date)        
+        total = "{:.2f}".format(requested_reservation.total_amount)        
     except Property.DoesNotExist:
         raise Http404("Not Found")
-    return render(request, 'bookings/itinerary.html', {'reservation': requested_reservation})
+    return render(request, 'bookings/itinerary.html', {'reservation': requested_reservation, 'reservation_dates': dates, 'total_amount': total })

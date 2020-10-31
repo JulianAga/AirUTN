@@ -42,15 +42,15 @@ class Reservation(models.Model):
     first_name = models.CharField(blank=True, null=True, max_length=50)
     last_name = models.CharField(blank=True, null=True, max_length=50)
     email = models.EmailField(blank=True, null=True, max_length=200)
-    property = models.ForeignKey(Property, on_delete=models.PROTECT, blank=False, null=False)
+    property = models.ForeignKey(Property, on_delete=models.DO_NOTHING, blank=False, null=False)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
 class ReservationDate(models.Model):
     date = models.DateField(blank=False, null=False)
-    property = models.ForeignKey(Property, on_delete=models.PROTECT, blank=False, null=False)
-    reservation = models.ForeignKey(Reservation, on_delete=models.PROTECT, blank=True, null=True)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, blank=False, null=True)
+    reservation = models.ForeignKey(Reservation, on_delete=models.SET_NULL, blank=True, null=True)
 
 def __str__(self):
     return self.property.name
